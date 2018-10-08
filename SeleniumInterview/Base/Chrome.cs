@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,43 +9,45 @@ using System.Threading.Tasks;
 
 namespace SeleniumInterview
 {
-    internal class Chrome
+    public class Chrome
     {
-        internal IWebDriver Driver;
+        internal RemoteWebDriver Driver;
 
-        internal void CreateBrowser()
+        internal RemoteWebDriver CreateBrowser()
         {
             Driver = new ChromeDriver();
             Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
             Driver.Manage().Window.Maximize();
+            //Driver.Navigate().GoToUrl("http://testapp.galenframework.com/");
+            return Driver;
 
         }
 
-        public void GoTo(string value)
+        protected void GoTo(RemoteWebDriver driver, string value)
         {
-            Driver.Navigate().GoToUrl(value);
+            driver.Navigate().GoToUrl("http://testapp.galenframework.com/");
 
         }
 
-        public IWebElement Find(By path)
+        protected IWebElement Find(By path)
         {
             IWebElement element = Driver.FindElement(path);
             return element;
 
         }
 
-        public void SendText(IWebElement element, string value)
+        protected void SendText(IWebElement element, string value)
         {
             element.SendKeys(value);
         }
 
-        public void Click(IWebElement element)
+        protected void Click(IWebElement element)
         {
             element.Click();
 
         }
 
-        public bool verifyElementVisible(IWebElement element)
+        protected bool verifyElementVisible(IWebElement element)
         {
             bool isVisible = false;
 
@@ -57,7 +60,7 @@ namespace SeleniumInterview
 
         }
 
-        public void EndBrowser()
+        protected void EndBrowser()
         {
             Driver.Close();
             Driver.Quit();
